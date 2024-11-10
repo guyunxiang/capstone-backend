@@ -1,17 +1,16 @@
-import { AdminJSOptions, ComponentLoader } from 'adminjs';
+import { AdminJSOptions } from 'adminjs';
+
+import { Components, componentLoader } from '../components/components.js';
 
 import Book from '../models/book.js';
 import Genre from '../models/genre.js';
 import User from '../models/user.js';
 
-// import componentLoader from './component-loader.js';
-
-import { Components, componentLoader } from '../components/components.js';
-
-
 const options: AdminJSOptions = {
   componentLoader,
-  rootPath: '/admin',
+  rootPath: '/',
+  loginPath: '/login',
+  logoutPath: '/logout',
   resources: [
     {
       resource: Book,
@@ -32,7 +31,7 @@ const options: AdminJSOptions = {
     {
       resource: Genre,
       options: {
-        navigation: { name: 'Genres Management', icon: 'Book' },
+        navigation: { name: 'Books Management', icon: 'Book' },
         listProperties: ['name', 'description', 'created_at'],
         properties: {
           _id: { isVisible: { list: false, show: false, edit: false } },

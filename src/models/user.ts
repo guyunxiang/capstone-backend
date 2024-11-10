@@ -1,7 +1,18 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-const userSchema = new mongoose.Schema({
+interface IUser extends Document {
+  username: string;
+  email: string;
+  password: string;
+  role: 'user' | 'admin';
+  favorites: mongoose.Types.ObjectId[];
+  created_at: Date;
+  updated_at: Date;
+  comparePassword(password: string): Promise<boolean>;
+}
+
+const userSchema = new Schema<IUser>({
   username: {
     type: String,
     required: true,
@@ -25,12 +36,17 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
+  favorites: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book',
+  }],
   created_at: {
     type: Date,
     default: Date.now,
   },
   updated_at: {
     type: Date,
+    default: Date.now,
   },
 });
 
@@ -41,16 +57,16 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt); // Hash the password
   }
   // Set updated_at to current date and time
-  this.updated_at = Date.now();
+  this.updated_at = new Date();
   next();
 });
 
 // Method to compare provided password with the hashed password
-userSchema.methods.comparePassword = async function (password) {
+userSchema.methods.comparePassword = async function (password: string) {
   const pass = await bcrypt.compare(password, this.password); // Compare passwords
   return pass;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<IUser>('User', userSchema);
 
 export default User;
