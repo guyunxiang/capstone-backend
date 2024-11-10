@@ -8,22 +8,25 @@
     "start": "dotenv -c '.env' -- node dist/app",
     "dev": "dotenv -c '.env' -- nodemon"
   },
-  "_moduleAliases": {
-    "@": "./"
-  },
   "dependencies": {
     "@adminjs/express": "^6.1.0",
     "@adminjs/mongoose": "^4.1.0",
     "adminjs": "^7.7.2",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
     "express": "^4.18.2",
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
-    "mongoose": "^8.0.0"
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",

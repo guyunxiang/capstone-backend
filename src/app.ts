@@ -1,6 +1,7 @@
 import express from 'express';
 import AdminJS from 'adminjs';
 import { buildAuthenticatedRouter } from '@adminjs/express';
+import cookieParser from 'cookie-parser';
 
 import provider from './admin/auth-provider.js';
 import options from './admin/options.js';
@@ -39,6 +40,10 @@ const start = async () => {
     },
   );
 
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  
   app.use('/', apiRoutes);
 
   app.use(admin.options.rootPath, router);

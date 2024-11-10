@@ -1,4 +1,1 @@
-export const DEFAULT_ADMIN = {
-  email: 'admin@example.com',
-  password: 'password',
-};
+export const JWT_SECRET = process.env.JWT_SECRET || "XF7UnFcCvFTxXhr71y";

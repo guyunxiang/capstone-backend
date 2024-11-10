@@ -10,7 +10,7 @@ const MyImage = (props: ActionProps) => {
 
   return (
     <div>
-      <img src={cover_image} alt={title} style={{ width: '100px' }} />
+      <img src={cover_image} alt={title} width={100} />
     </div>
   );
 };
