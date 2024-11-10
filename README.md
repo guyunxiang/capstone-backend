@@ -19,12 +19,16 @@ This project is a backend administration system built with Node.js, Express, and
 
 3. Create a `.env` file in the root directory and add your environment variables:
     ```env
-    DB_USERNAME=your_db_username
-    DB_PASSWORD=your_db_password
-    DB_HOST=your_db_host
-    DB_NAME=your_db_name
-    COOKIE_SECRET=your_cookie_secret
     NODE_ENV=development
+
+    DB_USERNAME=
+    DB_PASSWORD=
+    DB_HOST=cluster0.hylyq.mongodb.net
+    DB_NAME=ebooks_reader_and_manager
+
+    COOKIE_SECRET=
+    JWT_SECRET=
+    PORT=4000
     ```
 
 ## Running the Project
@@ -64,7 +68,7 @@ The project uses MongoDB as the database. The connection is initialized in [`src
 ### Routes
 
 - Admin Routes: [`src/routes/admin/index.ts`](src/routes/admin/index.ts)
-- User Routes: [`src/routes/admin/users.ts`](src/routes/admin/users.ts)
+- User Routes: [`src/routes/client/index.ts`](src/routes/client/index.ts)
 - API Routes: [`src/routes/index.js`](src/routes/index.js)
 
 ### Components
