@@ -8,7 +8,7 @@ import options from './admin/options.js';
 import initializeDb from './db/index.js';
 
 import routes from './routes/index.js';
-
+import swagger from '../swagger.js';
 
 const port = process.env.PORT || 3000;
 
@@ -46,6 +46,8 @@ const start = async () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
+
+  swagger(app);
 
   app.listen(port, () => {
     console.log(`AdminJS available at http://localhost:${port}${admin.options.rootPath}`);
