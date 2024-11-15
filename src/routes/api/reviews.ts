@@ -1,6 +1,7 @@
 import { Router, Request } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 
+import Book from '../../models/book.js';
 import Review from '../../models/review.js';
 import { authenticateToken } from "../../middlewares/authentication.js";
 
@@ -70,12 +71,19 @@ router.post("/add", authenticateToken, async (req: AuthenticatedRequest, res) =>
   try {
     const { rating, comment, book_id } = req.body;
 
+    // Check if the book exists
+    const exitingBook = await Book.findById(book_id);
+    if (!exitingBook) {
+      return res.status(404).json({
+        message: "Book not found!",
+      });
+    }
+
     // Check if the user has already added a review for this book
     const existingReview = await Review.findOne({
       book_id: book_id,
       user_id: req.user?.id,
     });
-
     if (existingReview) {
       return res.status(400).json({
         message: "You have already reviewed this book",
