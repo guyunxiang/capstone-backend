@@ -25,7 +25,7 @@ const Dashboard: React.FC = () => {
           </Link>
         </Box>
         <Box width={[1, 1 / 2, 1 / 3]}>
-          <BookTypeDistributionChart data={data} />
+          {/* <BookTypeDistributionChart data={data} /> */}
         </Box>
       </Box>
     </Box>
