@@ -10,9 +10,7 @@ import Bookmark from '../models/bookmark.js';
 
 const options: AdminJSOptions = {
   componentLoader,
-  rootPath: '/',
-  loginPath: '/login',
-  logoutPath: '/logout',
+  rootPath: '/admin',
   dashboard: {
     component: Components.Dashboard
   },

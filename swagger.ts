@@ -12,7 +12,7 @@ const options = {
         "This is a simple CRUD API application made with Express and documented with Swagger",
     },
   },
-  apis: ["./src/routes/client/*.ts", "./src/routes/client/pages/*.ts"],
+  apis: ["./src/routes/api/*.ts", "./src/routes/api/pages/*.ts"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

@@ -40,13 +40,14 @@ const start = async () => {
     },
   );
 
-  app.use('/', routes);
   app.use(admin.options.rootPath, router);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
 
+  app.use('/api', routes);
+  
   swagger(app);
 
   app.listen(port, () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text } from '@adminjs/design-system';
+import { Box, Text, Link } from '@adminjs/design-system';
 import BookTypeDistributionChart from './charts/BookTypeDistribution.js';
 
 // mock data
@@ -13,11 +13,14 @@ const data = [
 
 const Dashboard: React.FC = () => {
   return (
-    <Box>
-      <Text fontSize="xl" fontWeight="bold" mb="xl">Dashboard</Text>
-      <div>
+    <Box p={['lg']}>
+      <Box mb="lg" flex alignItems="center" justifyContent="space-between">
+        <Text fontSize="xl" fontWeight="bold">Dashboard</Text>
+        <Link variant="primary" href="/api-docs">API DOCS</Link>
+      </Box>
+      <Box flex>
         <BookTypeDistributionChart data={data} />
-      </div>
+      </Box>
     </Box>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart } from '@antv/g2';
+import { Box } from '@adminjs/design-system'
 
 interface Data {
   item: string;
@@ -49,9 +50,9 @@ const BookTypeDistributionChart: React.FC<BookTypeDistributionChartProps> = ({ d
   }, [data, chartRef.current]);
 
   return (
-    <div className='bg-white'>
+    <Box variant="card">
       <div id="container" />
-    </div>
+    </Box>
   );
 };
 
