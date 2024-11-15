@@ -5,12 +5,19 @@ import { Components, componentLoader } from '../components/components.js';
 import Book from '../models/book.js';
 import Genre from '../models/genre.js';
 import User from '../models/user.js';
+import Review from '../models/review.js';
+import Bookmark from '../models/bookmark.js';
 
 const options: AdminJSOptions = {
   componentLoader,
-  rootPath: '/',
-  loginPath: '/login',
-  logoutPath: '/logout',
+  rootPath: '/admin',
+  dashboard: {
+    component: Components.Dashboard
+  },
+  branding: {
+    logo: false,
+    companyName: 'Bookstore Admin',
+  },
   resources: [
     {
       resource: Book,
@@ -38,6 +45,29 @@ const options: AdminJSOptions = {
           created_at: { isVisible: { list: true, show: true, edit: false } },
           updated_at: { isVisible: { list: false, show: true, edit: false } },
         },
+      }
+    },
+    {
+      resource: Review,
+      options: {
+        navigation: { name: 'Books Management', icon: 'Review' },
+        listProperties: ['rating', 'comment', 'book_id', 'user_id', 'created_at'],
+        properties: {
+          updated_at: { isVisible: { list: false, show: true, edit: false } },
+          book_id: {
+            isVisible: { list: true },
+          },
+          user_id: {
+            isVisible: { list: true },
+          },
+        }
+      }
+    },
+    {
+      resource: Bookmark,
+      options: {
+        navigation: { name: 'Books Management', icon: 'Bookmark' },
+        listProperties: ['book_id', 'user_id', 'page_number', 'note', 'created_at'],
       }
     },
     {
