@@ -9,7 +9,7 @@ const options = {
       title: "Books Manager API for Client",
       version: "0.1.0",
       description:
-        "This is a simple CRUD API application made with Express and documented with Swagger",
+        "This is a simple CRUD API application made with Express and documented with Swagger <a href='/admin'>Booksotre Admin</a>",
     },
   },
   apis: ["./src/routes/api/*.ts", "./src/routes/api/pages/*.ts"],
