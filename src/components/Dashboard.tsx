@@ -18,8 +18,15 @@ const Dashboard: React.FC = () => {
         <Text fontSize="xl" fontWeight="bold">Dashboard</Text>
         <Link variant="primary" href="/api-docs">API DOCS</Link>
       </Box>
-      <Box flex>
-        <BookTypeDistributionChart data={data} />
+      <Box flex flexDirection={["column", "row"]} style={{ gap: 16 }}>
+        <Box width={[1, 1 / 2, 1 / 3]} variant="card" flex flexDirection="column" alignItems="center" justifyContent="center">
+          <Link href="/api-docs">
+            <img src="/images/swagger_logo.svg" alt="Swagger API" width="100%" />
+          </Link>
+        </Box>
+        <Box width={[1, 1 / 2, 1 / 3]}>
+          <BookTypeDistributionChart data={data} />
+        </Box>
       </Box>
     </Box>
   );

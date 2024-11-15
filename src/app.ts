@@ -40,6 +40,8 @@ const start = async () => {
     },
   );
 
+  app.use(express.static("public"));
+
   app.use(admin.options.rootPath, router);
 
   app.use(express.json());
@@ -47,7 +49,7 @@ const start = async () => {
   app.use(cookieParser());
 
   app.use('/api', routes);
-  
+
   swagger(app);
 
   app.listen(port, () => {
