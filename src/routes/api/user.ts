@@ -290,4 +290,40 @@ router.put('/favorite/add', authenticateToken, async (req: AuthenticatedRequest,
   }
 });
 
+/**
+ * @swagger
+ * /api/users/logout:
+ *   post:
+ *     summary: Logout a user
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Error logging out
+ */
+router.post('/logout', (req: Request, res: Response) => {
+  try {
+    // Clear the JWT cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    // Return success response
+    res.json({ message: "Logout successful" });
+  } catch (error) {
+    console.error("Error logging out:", error);
+    res.status(500).json({ message: "Error logging out" });
+  }
+});
+
 export default router;
