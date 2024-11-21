@@ -22,7 +22,7 @@ interface AuthenticatedRequest extends Request {
 
 /**
  * @swagger
- * /register:
+ * /api/users/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Users]
@@ -77,7 +77,7 @@ interface AuthenticatedRequest extends Request {
 
 /**
  * @swagger
- * /login:
+ * /api/users/login:
  *   post:
  *     summary: Login a user
  *     tags: [Users]
@@ -126,7 +126,7 @@ interface AuthenticatedRequest extends Request {
 
 /**
  * @swagger
- * /favorite/add:
+ * /api/users/favorite/add:
  *   put:
  *     summary: Add a book to user's favorites
  *     tags: [Users]
