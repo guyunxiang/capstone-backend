@@ -52,6 +52,10 @@ npm start
 
 ## Project Details
 
+### Start
+
+[http://localhost:4000/admin/login](http://localhost:4000/admin/login)
+
 ### Database
 
 The project uses MongoDB as the database. The connection is initialized in [`src/db/index.ts`](src/db/index.ts).

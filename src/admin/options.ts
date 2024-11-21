@@ -7,6 +7,7 @@ import Genre from '../models/genre.js';
 import User from '../models/user.js';
 import Review from '../models/review.js';
 import Bookmark from '../models/bookmark.js';
+import ReadingProgress from '../models/readingProgress.js';
 
 const options: AdminJSOptions = {
   componentLoader,
@@ -68,6 +69,13 @@ const options: AdminJSOptions = {
       options: {
         navigation: { name: 'Books Management', icon: 'Bookmark' },
         listProperties: ['book_id', 'user_id', 'page_number', 'note', 'created_at'],
+      }
+    },
+    {
+      resource: ReadingProgress,
+      options: {
+        navigation: { name: 'Books Management', icon: 'ReadingProgress' },
+        listProperties: ['book_id', 'user_id', 'progress', 'created_at'],
       }
     },
     {
