@@ -1,5 +1,8 @@
 import { Router, Request, Response } from 'express';
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const nodemailer = require('nodemailer');
 
 import User from '../../models/user.js';
 import Book from '../../models/book.js';
@@ -323,6 +326,170 @@ router.post('/logout', (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error logging out:", error);
     res.status(500).json({ message: "Error logging out" });
+  }
+});
+
+/**
+ * @swagger
+ * /api/users/forgot-password:
+ *   post:
+ *     summary: Send a password reset email
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *     responses:
+ *       200:
+ *         description: Password reset email sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error sending password reset email
+ */
+router.post('/forgot-password', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate a password reset token
+    const resetToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+
+    const {
+      EMAIL_USER,
+      EMAIL_PASS,
+      EMAIL_HOST,
+      EMAIL_PORT,
+      EMAIL_SECURE,
+
+      FRONT_END_URL,
+    } = process.env;
+
+    if (!EMAIL_USER || !EMAIL_PASS) {
+      return res.status(500).json({ message: "Email not configured" });
+    }
+
+    // Create a transporter object using the default SMTP transport
+    const transporter = nodemailer.createTransport({
+      host: EMAIL_HOST,
+      port: EMAIL_PORT,
+      secure: EMAIL_SECURE,
+      auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASS,
+      },
+      logger: true,
+      debug: true,
+    });
+
+    const emailText = `
+      You requested a password reset. Please use the following token to reset your password:
+
+      ${FRONT_END_URL}/forgot-password?token=${resetToken}&email=${email}
+    `;
+
+    // Send the password reset email
+    const mailOptions = {
+      from: EMAIL_USER,
+      to: email,
+      subject: 'Password Reset',
+      text: emailText,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.json({ message: "Password reset email sent successfully" });
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+    res.status(500).json({ message: "Error sending password reset email" });
+  }
+});
+
+/**
+ * @swagger
+ * /api/users/reset-password:
+ *   post:
+ *     summary: Reset user password
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: Password reset successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Error resetting password
+ */
+router.put('/reset-password', async (req: Request, res: Response) => {
+  try {
+    const { email, password, token } = req.body;
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Verify the reset token
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+      if (decoded.id !== user._id.toString()) {
+        return res.status(400).json({ message: "Invalid token" });
+      }
+    } catch (error) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    // Update the user's password
+    user.password = password; // Password will be hashed by the pre-save hook
+    await user.save();
+
+    res.json({ message: "Password reset successfully" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).json({ message: "Error resetting password" });
   }
 });
 
