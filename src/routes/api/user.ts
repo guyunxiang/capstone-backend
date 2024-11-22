@@ -428,7 +428,7 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
 /**
  * @swagger
  * /api/users/reset-password:
- *   post:
+ *   put:
  *     summary: Reset user password
  *     tags: [Users]
  *     requestBody:
