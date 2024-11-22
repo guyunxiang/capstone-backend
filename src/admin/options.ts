@@ -16,8 +16,24 @@ const options: AdminJSOptions = {
     component: Components.Dashboard
   },
   branding: {
-    logo: false,
+    logo: '/images/logo.png',
+    favicon: '/images/logo.jpeg',
     companyName: 'Bookstore Admin',
+    withMadeWithLove: false,
+  },
+  locale: {
+    language: 'en',
+    availableLanguages: ['en'],
+    translations: {
+      en: {
+        components: {
+          Login: {
+            welcomeHeader: "Welcome",
+            welcomeMessage: "Welcome to eText Reader and Manager System - Your ultimate tool for managing, reading, and organizing e-texts efficiently. "
+          }
+        }
+      }
+    },
   },
   resources: [
     {
@@ -90,7 +106,36 @@ const options: AdminJSOptions = {
           updated_at: { isVisible: { list: false, show: true, edit: false } },
           role: { isVisible: { list: true, show: true, edit: true } },
         },
-      },
+        actions: {
+          list: {
+            after: async (response: any) => {
+              // Modify the list data to mask email
+              response.records = response.records.map((record: any) => {
+                if (record.params.email) {
+                  record.params.email = record.params.email.replace(
+                    /(.{2}).+(@.+)/,
+                    '$1***$2'
+                  );
+                }
+                return record;
+              });
+              return response;
+            },
+          },
+          show: {
+            after: async (response: any) => {
+              // Modify the show data to mask email
+              if (response.record.params.email) {
+                response.record.params.email = response.record.params.email.replace(
+                  /(.{2}).+(@.+)/,
+                  '$1***$2'
+                );
+              }
+              return response;
+            },
+          },
+        },
+      }
     }
   ],
   databases: [],
