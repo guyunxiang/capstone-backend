@@ -12,7 +12,7 @@ import routes from './routes/index.js';
 import swagger from '../swagger.js';
 
 const port = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONT_END_URL = process.env.FRONT_END_URL || 'http://localhost:5173';
 
 const start = async () => {
   const app = express();
@@ -43,7 +43,7 @@ const start = async () => {
   );
 
   app.use(cors({
-    origin: FRONTEND_URL,
+    origin: FRONT_END_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   }));
