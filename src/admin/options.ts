@@ -11,7 +11,7 @@ import ReadingProgress from '../models/readingProgress.js';
 
 const options: AdminJSOptions = {
   componentLoader,
-  rootPath: '/',
+  rootPath: '/admin',
   dashboard: {
     component: Components.Dashboard
   },
