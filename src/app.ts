@@ -2,6 +2,7 @@ import express from 'express';
 import AdminJS from 'adminjs';
 import { buildAuthenticatedRouter } from '@adminjs/express';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import provider from './admin/auth-provider.js';
 import options from './admin/options.js';
@@ -11,6 +12,7 @@ import routes from './routes/index.js';
 import swagger from '../swagger.js';
 
 const port = process.env.PORT || 3000;
+const FRONT_END_URL = process.env.FRONT_END_URL || 'http://localhost:5173';
 
 const start = async () => {
   const app = express();
@@ -39,6 +41,12 @@ const start = async () => {
       resave: true,
     },
   );
+
+  app.use(cors({
+    origin: FRONT_END_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  }));
 
   app.use(express.static("public"));
 
