@@ -293,6 +293,41 @@ router.put('/favorite/add', authenticateToken, async (req: AuthenticatedRequest,
   }
 });
 
+router.get('/favorites', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    // Get the authenticated user's ID from the token
+    const { id } = req.user as { id: string };
+
+    // Extract optional book_id query parameter
+    const { book_id } = req.query;
+
+    // Find the user in the database
+    const user = await User.findById(id).populate('favorites'); // Populate favorites with book details
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (book_id) {
+      // Check if the specific book_id is in the user's favorites
+      const isFavorite = user.favorites.some((favorite: any) => favorite._id.toString() === book_id);
+
+      return res.json({
+        message: `Book ${isFavorite ? "is" : "is not"} in favorites`,
+        isFavorite,
+      });
+    }
+
+    // If no book_id is provided, return the full list of favorites
+    res.json({
+      message: "Favorites retrieved successfully",
+      favorites: user.favorites,
+    });
+  } catch (error) {
+    console.error("Error getting user favorites:", error);
+    res.status(500).json({ message: "Error getting user favorites" });
+  }
+});
+
 /**
  * @swagger
  * /api/users/logout:
@@ -318,7 +353,7 @@ router.post('/logout', (req: Request, res: Response) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     // Return success response
