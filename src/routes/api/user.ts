@@ -239,7 +239,8 @@ router.post('/login', async (req: Request, res: Response) => {
       httpOnly: true, // Prevent JavaScript access to the cookie
       secure: process.env.NODE_ENV === "production", // Use secure cookies in production
       maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
-      sameSite: "strict", // Prevent CSRF by limiting cross-site requests
+      sameSite: "none", // Prevent CSRF by limiting cross-site requests
+      domain: process.env.NODE_ENV === "production" ? process.env.FRONT_END_URL : undefined, // Set domain in production
     });
 
     // Return success response
