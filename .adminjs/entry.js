@@ -1,5 +1,5 @@
 AdminJS.UserComponents = {}
-import MyImage from '../src/components/my-image'
+import MyImage from '../dist/src/components/my-image'
 AdminJS.UserComponents.MyImage = MyImage
-import Dashboard from '../src/components/Dashboard'
+import Dashboard from '../dist/src/components/Dashboard'
 AdminJS.UserComponents.Dashboard = Dashboard
